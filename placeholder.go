@@ -1,4 +1,4 @@
-package main
+package placeholder
 
 import (
   "fmt"
@@ -29,7 +29,6 @@ func handler(w http.ResponseWriter, r *http.Request) {
 // Handler for URL paths /svg/WIDTH/HEIGHT/[FILL/STROKE]
 func svg(w http.ResponseWriter, r *http.Request) {
   url := strings.Split(r.URL.Path, "/")
-  fmt.Printf("%v\n", url)
   width, _ := strconv.Atoi(url[2])
   height, _ := strconv.Atoi(url[3])
   fill := "#CCCCCC"
@@ -41,9 +40,9 @@ func svg(w http.ResponseWriter, r *http.Request) {
     }
   }
 
-  values := &Placeholder{Height: height, Width: width, Fill: fill, Stroke: stroke}
-  t, err := template.ParseFiles(filepath.Join("templates", "placeholder.svg"))
-  //t.Funcs(funcMap)
+  values := &Placeholder{Height: height,Width: width,Fill: fill,Stroke: stroke}
+  fmt.Printf("%+v\n", values)
+  t, err := template.New("placeholder.svg").ParseFiles(filepath.Join("templates", "placeholder.svg"))
 
   if err != nil {
     fmt.Printf("%v", err)
@@ -51,7 +50,11 @@ func svg(w http.ResponseWriter, r *http.Request) {
 
   // Set the content type to image/svg
   w.Header().Set("Content-Type", "image/svg+xml")
-  t.Execute(w, values)
+  rendererr := t.Execute(w, values)
+
+  if rendererr != nil {
+    fmt.Printf("%v", rendererr)
+  }
 }
 
 func main() {
