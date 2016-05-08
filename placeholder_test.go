@@ -1,4 +1,4 @@
-package placeholder
+package main
 
 import (
   "fmt"
