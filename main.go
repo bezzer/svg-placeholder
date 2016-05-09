@@ -2,7 +2,9 @@ package main
 
 import (
   "fmt"
+  "log"
   "strconv"
+  "strings"
   "regexp"
   "path/filepath"
   "html/template"
@@ -16,30 +18,41 @@ type Placeholder struct {
   BorderWidth int
   BorderHeight int
   StrokeWidth int
-  Fill   string
+  Fill string
+  FillEnd string
   Stroke string
   Message string
+  ShowText bool
 }
 
-// SVG placeholder template
-const svgTemplate = `<svg width="{{.Width}}" height="{{.Height}}" xmlns="http://www.w3.org/2000/svg">
-  <rect x="{{.StrokeWidth}}" y="{{.StrokeWidth}}" width="{{.BorderWidth}}" height="{{.BorderHeight}}" style="fill: #{{.Fill}}; stroke: #{{.Stroke}}; stroke-width: {{.StrokeWidth}}"/>
-  <text x="50%" y="50%" font-size="24" text-anchor="middle" alignment-baseline="middle" font-family="sans-serif" fill="{{.Stroke}}">
-    {{if .Message}}
-      {{.Message}}
-    {{else}}
-      {{.Width}}x{{.Height}}
-    {{end}}
-  </text>
-</svg>`
+// SVG placeholder template (string formated to remove newlines and spaces)
+const svgTemplate = "<svg width=\"{{.Width}}\" height=\"{{.Height}}\" xmlns=\"http://www.w3.org/2000/svg\">" +
+  "{{if .FillEnd}}" +
+    "<linearGradient id=\"lg\">"+
+      "<stop offset=\"0%\" stop-color=\"#{{.Fill}}\"/>" +
+      "<stop offset=\"100%\" stop-color=\"#{{.FillEnd}}\"/>" +
+    "</linearGradient>" +
+  "{{end}}" +
+  "<rect x=\"{{.StrokeWidth}}\" y=\"{{.StrokeWidth}}\" width=\"{{.BorderWidth}}\" height=\"{{.BorderHeight}}\" style=\"fill:{{if .FillEnd}}url(#lg){{else}}#{{.Fill}}{{end}};stroke:#{{.Stroke}};stroke-width:{{.StrokeWidth}}\"/>" +
+  "<text x=\"50%\" y=\"50%\" font-size=\"18\" text-anchor=\"middle\" alignment-baseline=\"middle\" font-family=\"sans-serif\" fill=\"#{{.Stroke}}\">"+
+    "{{if .ShowText}}" +
+      "{{if .Message}}" +
+        "{{.Message}}" +
+      "{{else}}" +
+        "{{.Width}}x{{.Height}}" +
+      "{{end}}" +
+    "{{end}}" +
+  "</text>" +
+"</svg>"
 
+// Default strokewidth
 const strokeWidth = 2
 
 // Pre-parse the template
 var templates = template.Must(template.New("svg").Parse(svgTemplate))
 
 // Patern matcher for SVG URLs
-var svgPatern = regexp.MustCompile("\\/(\\d+)(?:\\/(\\d+))?(?:\\/([0-9a-fA-F]{6}))?(?:\\/([0-9a-fA-F]{6}))?")
+var svgPatern = regexp.MustCompile(`\/(\d+)(?:x(\d+))?(?:\/([\da-f]{6}|[\da-f]{3})(?:-([\da-f]{6}|[\da-f]{3}))?)?(?:\/([\da-f]{6}|[\da-f]{3}))?`)
 
 // Default handler
 func handler(w http.ResponseWriter, r *http.Request) {
@@ -48,16 +61,19 @@ func handler(w http.ResponseWriter, r *http.Request) {
 
 // Handler for URL paths /svg/WIDTH/HEIGHT/[FILL/STROKE]
 func svg(w http.ResponseWriter, r *http.Request) {
-  
+  var showText bool
   var width, height int
-  var fill, stroke, message string
-  fill = "CCCCCC"
-  stroke = "333333"
+  var fill, fillEnd, stroke, message string
   
-  if svgPatern.MatchString(r.URL.Path) {
+  // Lowercase the path to simpify the regex
+  path := strings.ToLower(r.URL.Path)
+  
+  fill = "DEDEDE"
+  stroke = "555"
+  
+  if svgPatern.MatchString(path) {
     // Output SVG
-    matches := svgPatern.FindStringSubmatch(r.URL.Path)
-    fmt.Printf("%v Matches: %+v\n", len(matches), matches)
+    matches := svgPatern.FindStringSubmatch(path)
     
     // Width must always be defined
     width, _ = strconv.Atoi(matches[1])
@@ -66,13 +82,19 @@ func svg(w http.ResponseWriter, r *http.Request) {
     if len(matches[2]) > 0 {
       height, _ = strconv.Atoi(matches[2])
     }
+    // Determine whether to show text based on width/height
+    showText = width >= 75 && height >= 40
     // Fill colour
     if len(matches[3]) > 0 {
       fill = matches[3]
     }
-    // Stroke colour
+    // Fill end colour (for gradients) 
     if len(matches[4]) > 0 {
-      stroke = matches[4]
+      fillEnd = matches[4]
+    }
+    // Stroke colour
+    if len(matches[5]) > 0 {
+      stroke = matches[5]
     } 
   } else {
     // Show error image
@@ -85,21 +107,25 @@ func svg(w http.ResponseWriter, r *http.Request) {
     Height: height,
     Width: width,
     Fill: fill,
+    FillEnd: fillEnd,
     Stroke: stroke,
     StrokeWidth: strokeWidth,
     Message: message,
+    ShowText: showText,
     BorderWidth: width - strokeWidth * 2,
     BorderHeight: height - strokeWidth * 2}
 
   // Set the content type to image/svg
   w.Header().Set("Content-Type", "image/svg+xml")
   w.Header().Set("Cache-Control", "max-age=31536000")
-  
+  w.Header().Set("Content-Disposition", fmt.Sprintf("inline; filename=%dx%d.svg", width, height))
   // Construct the output
   rendererr := templates.ExecuteTemplate(w, "svg", values)
 
   if rendererr != nil {
-    fmt.Printf("Error rendering template: %v", rendererr)
+    log.Printf("Error rendering template: %v", rendererr)
+  } else {
+    log.Printf("SVG Placeholder of width %d, height %d, fill %s and stroke %s generated.", width, height, fill, stroke)
   }
 }
 
