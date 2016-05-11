@@ -54,11 +54,6 @@ var templates = template.Must(template.New("svg").Parse(svgTemplate))
 // Patern matcher for SVG URLs
 var svgPatern = regexp.MustCompile(`\/(\d+)(?:x(\d+))?(?:\/([\da-f]{6}|[\da-f]{3})(?:-([\da-f]{6}|[\da-f]{3}))?)?(?:\/([\da-f]{6}|[\da-f]{3}))?`)
 
-// Default handler
-func handler(w http.ResponseWriter, r *http.Request) {
-  fmt.Fprintf(w, "Hi There")
-}
-
 // Handler for URL paths /svg/WIDTH/HEIGHT/[FILL/STROKE]
 func svg(w http.ResponseWriter, r *http.Request) {
   var showText bool
@@ -130,10 +125,9 @@ func svg(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-  var iconsHandler = http.StripPrefix("/images/icons/", http.FileServer(http.Dir(filepath.Join("images", "icons"))))
+  var iconsHandler = http.StripPrefix("/images/icons/", http.FileServer(http.Dir(filepath.Join("www","images", "icons"))))
   http.Handle("/favicon.ico", iconsHandler)
-  http.Handle("/images/icons/", iconsHandler)
-  http.HandleFunc("/", handler)
+  http.Handle("/", http.FileServer(http.Dir("www")));
   http.Handle("/svg/", http.StripPrefix("/svg", http.HandlerFunc(svg)))
   http.ListenAndServe(":5000", nil)
 }
