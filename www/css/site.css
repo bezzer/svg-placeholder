@@ -1,5 +1,5 @@
 body {
-  font-family: "Lato", sans-serif;
+  font-family: "Source Sans Pro", sans-serif;
   font-size: 18px;
   color: #333;
   line-height: 1.5;
@@ -7,13 +7,14 @@ body {
 }
 
 h1, h2 {
-  font-family: "Architects Daughter", cursive;  
+  font-family: "Permanent Marker", cursive;  
 }
 
 h1 {
   font-size: 2em;
   font-size: 10vmin;
   text-align: center;
+  text-shadow: 5px 5px 5px #7B1E7A;
 }
 .pics-inputs {
   display: flex;
@@ -25,7 +26,7 @@ h1 {
 }
 .pics-input label {
   display: block; 
-  color: #ff9c9f;
+  color: #dfdfdf;
 }
 .pics-input input {
   height: 2rem;
@@ -34,32 +35,33 @@ h1 {
   font-size: 1.8rem;
   border: none;
   color: #f5f5f5;
-  border-bottom: 2px solid #ff5a5f;
+  border-bottom: 3px solid #7B1E7A;
   background: rgba(255,255,255,0.1);
 }
 .pics-input .optional {
   display: block;
   font-size: 12px;
   margin-top: 5px;
-  color: #ff7a7f;
+  color: #7B1E7A;
   opacity: 0.9;
 }
 .pics-url {
   border: 1px solid #777;
-  background: #dfdfdf;
+  background: rgba(255,255,255,0.6);
   padding: 10px;
   text-align: center;
   font-size: 26px;
   font-weight: bold;
-  color: #3c3c3c;
+  color: #7B1E7A;
   margin: 20px 0;
 }
 .pics-preview {
   text-align: center;
   margin: 20px;
+  min-height: 500px;
 }
 .pics-display {
-  background: #087e8b;
+  background: #7B1E7A;
   padding: 15px 0;
 }
 .pics-container {
@@ -69,7 +71,8 @@ h1 {
 }
 /* blocks */
 .pics-header {
-  background-color: #ff5a5f;
+  background-color: #F9564F;
+  background-image: linear-gradient(0deg, #7B1E7A, #F9564F);
   color: #f5f5f5;
   padding: 15px 0;
 }
@@ -80,12 +83,15 @@ h1 {
   padding: 15px 0;
 }
 .pics-try {
-  background-color: #3c3c3c;
+  background-color: #0C0A3E;
   color: #f5f5f5;
   padding: 15px;
+  border: 3px solid #F9564F;
+  border-left: none;
+  border-right: none; 
 }
 .pics-footer {
-  background-color: #3c3c3c;
+  background-color: #0C0A3E;
   color: #f5f5f5;
   padding: 20px 0;
 }

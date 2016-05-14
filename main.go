@@ -6,9 +6,9 @@ import (
   "strconv"
   "strings"
   "regexp"
-  "path/filepath"
   "html/template"
   "net/http"
+  "github.com/NYTimes/gziphandler"
 )
 
 // Placeholder Holds the values for building an SVG
@@ -125,9 +125,8 @@ func svg(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-  var iconsHandler = http.StripPrefix("/images/icons/", http.FileServer(http.Dir(filepath.Join("www","images", "icons"))))
-  http.Handle("/favicon.ico", iconsHandler)
-  http.Handle("/", http.FileServer(http.Dir("www")));
-  http.Handle("/svg/", http.StripPrefix("/svg", http.HandlerFunc(svg)))
+  fileHandler := http.FileServer(http.Dir("www"))
+  http.Handle("/", gziphandler.GzipHandler(fileHandler))
+  http.Handle("/svg/", gziphandler.GzipHandler(http.StripPrefix("/svg", http.HandlerFunc(svg))))
   http.ListenAndServe(":5000", nil)
 }

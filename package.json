@@ -1,0 +1,25 @@
+{
+  "name": "svg-placeholder",
+  "version": "1.0.0",
+  "description": "svg-placeholder front end resources scripts",
+  "main": "Gulpfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bezzer/svg-placeholder.git"
+  },
+  "author": "Chris Berry",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bezzer/svg-placeholder/issues"
+  },
+  "homepage": "https://github.com/bezzer/svg-placeholder#readme",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-clean-css": "^2.0.7",
+    "gulp-minify": "0.0.11",
+    "gulp-uglify": "^1.5.3"
+  }
+}

@@ -1,6 +1,6 @@
 (function () {
   var data = {
-    width: "100",
+    width: "300",
     height: "",
     background: "",
     foreground: ""
