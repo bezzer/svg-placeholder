@@ -35,14 +35,14 @@ h1 {
   font-size: 1.8rem;
   border: none;
   color: #f5f5f5;
-  border-bottom: 3px solid #7B1E7A;
+  border: 2px solid #F9564F;
   background: rgba(255,255,255,0.1);
 }
 .pics-input .optional {
   display: block;
   font-size: 12px;
   margin-top: 5px;
-  color: #7B1E7A;
+  color: #F9564F;
   opacity: 0.9;
 }
 .pics-url {
@@ -83,12 +83,9 @@ h1 {
   padding: 15px 0;
 }
 .pics-try {
-  background-color: #0C0A3E;
+  background-color: #611760;
   color: #f5f5f5;
-  padding: 15px;
-  border: 3px solid #F9564F;
-  border-left: none;
-  border-right: none; 
+  padding: 15px; 
 }
 .pics-footer {
   background-color: #0C0A3E;
@@ -99,6 +96,10 @@ h1 {
   list-style: none;
   margin: 0;
   padding: 0;
+}
+.pics-social-list li {
+  display: inline-block;
+  margin-right: 20px;
 }
 .pics-social-list a {
   color: #f5f5f5;
