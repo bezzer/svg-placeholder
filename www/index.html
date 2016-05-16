@@ -9,11 +9,13 @@
     <body>
         <div class="pics-header">
             <h1><i class="icon-photo"></i> placeholder.pics</h1>
-            <div class="pics-container">
+            <div class="pics-container pics-info">
                 <p>
                     The lightest way to include placeholder images in your designs. 
                     All images are lovingly served up as steaming-hot, fully optimized 
-                    Scalable Vector Graphics (SVG) in any size or color you need. 
+                    Scalable Vector Graphics (SVGs) in any size or color you need.
+                    You can even add a short description to keep track of what goes
+                    where in your mockups.
                 </p>
             </div>
         </div>
@@ -23,11 +25,11 @@
                 <div class="pics-inputs">
                     <div class="pics-input">
                         <label for="width">Width</label>
-                        <input type="number" step="1" id="width" value="300">
+                        <input type="text" step="1" id="width" value="300">
                     </div>
                     <div class="pics-input">
                         <label for="height">Height </label>
-                        <input type="number" step="1" min=-"0" id="height">
+                        <input type="text" step="1" min=-"0" id="height">
                         <span class="optional">Optional</span>
                     </div>
                     <div class="pics-input">
@@ -43,7 +45,7 @@
                     <div class="pics-input">
                         <label for="message">Image label</label>
                         <input type="text" placeholder="Placeholder pic" id="message">
-                        <span class="optional">Optional, replaces size info</span>
+                        <span class="optional">Optional, replaces image dimensions</span>
                     </div>
                 </div>
                 <div class="pics-display">

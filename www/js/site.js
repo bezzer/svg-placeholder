@@ -24,10 +24,14 @@
   
   var connectElement = function(elemId) {
     var element = document.querySelector("#" + elemId);
+    if (element.type === "text" || element.type === "number") {
+      element.addEventListener("click", function (event) {
+        event.target.setSelectionRange(0, event.target.value.length);
+      });
+    }
     element.addEventListener("input", function (event) {
       var value = event.target.value;
       data[elemId] = value;
-      render();
       if (element.type === "color") {
         var colorDisplay = document.querySelector("#" + elemId + " + label .pics-input-color");
         if (colorDisplay) {
@@ -36,6 +40,7 @@
           colorDisplay.innerHTML = value.toUpperCase();
         }
       }
+      render();
     });
   };
   
@@ -45,6 +50,8 @@
     connectElement("background");
     connectElement("foreground");
     connectElement("message");
+    
+    
     // initial render
     render();
   };
@@ -79,7 +86,7 @@
     // Build the URL
     url = baseURL + dimensions + colors + urlMessage;
     
-    renderEl.innerHTML = "<div class='pics-container'><div class='pics-url'>" + url + "</div></div>" +
+    renderEl.innerHTML = "<div class='pics-container'><input onClick='this.setSelectionRange(0, this.value.length);' class='pics-url' value='" + url + "'/></div>" +
     "<div class='pics-preview'><img src='" + url + "' alt='Placeholder " + dimensions +"'/></div>";
   };
   
