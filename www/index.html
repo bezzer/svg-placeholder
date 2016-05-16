@@ -2,7 +2,7 @@
 <html>
     <head>
        <title>Placeholder.pics</title>
-       <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro|Permanent+Marker' rel='stylesheet' type='text/css'>
+       <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,200' rel='stylesheet' type='text/css'>
        <link rel="stylesheet" href="css/site.css">
        <link rel="stylesheet" href="css/placeholder-embedded.css">
     </head>
@@ -12,46 +12,68 @@
             <div class="pics-container">
                 <p>
                     The lightest way to include placeholder images in your designs. 
-                    All images are lovingly served up as steaming-hot, optimized 
-                    SVGs in any size or color you desire.
+                    All images are lovingly served up as steaming-hot, fully optimized 
+                    Scalable Vector Graphics (SVG) in any size or color you need. 
                 </p>
             </div>
         </div>
         <div class="pics-try">
-            <div class="pics-container pics-inputs">
-                <div class="pics-input">
-                    <label for="width">Width</label>
-                    <input type="number" step="1" id="width" placeholder="300">
+            <h2>Try it out</h2>
+            <div class="pics-try-form pics-container">
+                <div class="pics-inputs">
+                    <div class="pics-input">
+                        <label for="width">Width</label>
+                        <input type="number" step="1" id="width" value="300">
+                    </div>
+                    <div class="pics-input">
+                        <label for="height">Height </label>
+                        <input type="number" step="1" min=-"0" id="height">
+                        <span class="optional">Optional</span>
+                    </div>
+                    <div class="pics-input">
+                        <input type="color" value="#DEDEDE"id="background">
+                        <label for="background">Background<div class="pics-input-color"></div></label>
+                        <span class="optional">Optional</span>
+                    </div>
+                    <div class="pics-input">
+                        <input type="color" value="#555555" id="foreground">
+                        <label for="foreground">Foreground<div class="pics-input-color"></div></label>
+                        <span class="optional">Optional</span>
+                    </div>
+                    <div class="pics-input">
+                        <label for="message">Image label</label>
+                        <input type="text" placeholder="Placeholder pic" id="message">
+                        <span class="optional">Optional, replaces size info</span>
+                    </div>
                 </div>
-                <div class="pics-input">
-                    <label for="height">Height </label>
-                    <input type="number" step="1" min=-"0" id="height">
-                    <span class="optional">Optional</span>
-                </div>
-                <div class="pics-input">
-                    <label for="background">Background</label>
-                    <input type="color" value="#DEDEDE"id="background">
-                    <span class="optional">Optional</span>
-                </div>
-                <div class="pics-input">
-                    <label for="foreground">Foreground</label>
-                    <input type="color" value="#555" id="foreground">
-                    <span class="optional">Optional</span>
-                </div>
+                <div class="pics-display">
+                    <div id="render"></div>
+                </div>  
             </div>
         </div>
-        <div class="pics-display">
-            <div id="render"></div>
-        </div>  
-        <div class="pics-about">    
+        <div class="pics-about">
+            <div class="pics-container">
+                <h2>Build your own URL</h2>
+                <p>The <strong>placeholder.pics</strong> service works uses a simple URL format to define the size, colours, and message used for your image.
+                   The format that image URLs must follow is:
+                </p>
+                <ol>
+                    <li>The URL must start with <strong>/svg/</strong></li>
+                    <li>URLs that specify only a single dimension will be square, for example a request to <strong>/svg/100</strong> will return an svg that is 100 pixels wide and 100 pixels high</li>
+                    <li>Width and height is specified via <strong>WIDTH</strong>x<strong>HEIGHT</strong></li>
+                    <li>Background color can be either a single 3 or 6 character hex color code, or a gradient by defining a start color and stop color with <strong>START</strong>-<strong>STOP</strong></li>
+                    <li>Foreground or text and border color can be a 3 or 6 character hex color code. Background color must be defined in order to set a foreground color</li>
+                    <li>A description can be set as the last part of the URL. Descriptions should be short and take into account the size of the image being requested. Foreground and background color is required when using a description</li>
+                </ol>
+            </div>
         </div>
         <footer class="pics-footer">
             <div class="pics-container">    
                 <div class="pics-social">
                     <ul class="pics-social-list">
+                        <li><a href="https://github.com/bezzer/svg-placeholder" title="Github project"><i class="icon-github"></i><a href="https://github.com/bezzer/svg-placeholder" title="Github project">Github</a></li>
                         <li><a href="https://twitter.com/bezzerbud" title="twitter"><i class="icon-twitter"></i><a href="https://twitter.com/bezzerbud" title="twitter">Twitter</a></li>
                         <li><a href="https://www.linkedin.com/in/chrberry" title="linked in"><i class="icon-linkedin"></i>Linkedin</a></li>
-                        <li><a href="https://github.com/bezzer/svg-placeholder" title="Github project"><i class="icon-github"></i><a href="https://github.com/bezzer/svg-placeholder" title="Github project">Github</a></li>
                     </ul>
                 </div>
                 <div class="pics-contact">

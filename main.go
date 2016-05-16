@@ -52,7 +52,7 @@ const strokeWidth = 2
 var templates = template.Must(template.New("svg").Parse(svgTemplate))
 
 // Patern matcher for SVG URLs
-var svgPatern = regexp.MustCompile(`\/(\d+)(?:x(\d+))?(?:\/([\da-f]{6}|[\da-f]{3})(?:-([\da-f]{6}|[\da-f]{3}))?)?(?:\/([\da-f]{6}|[\da-f]{3}))?`)
+var svgPatern = regexp.MustCompile(`\/(\d+)(?:x(\d+))?(?:\/([\da-f]{6}|[\da-f]{3})(?:-([\da-f]{6}|[\da-f]{3}))?)?(?:\/([\da-f]{6}|[\da-f]{3})(?:\/(.+))?)?`)
 
 // Handler for URL paths /svg/WIDTH/HEIGHT/[FILL/STROKE]
 func svg(w http.ResponseWriter, r *http.Request) {
@@ -64,7 +64,7 @@ func svg(w http.ResponseWriter, r *http.Request) {
   path := strings.ToLower(r.URL.Path)
   
   fill = "DEDEDE"
-  stroke = "555"
+  stroke = "555555"
   
   if svgPatern.MatchString(path) {
     // Output SVG
@@ -90,7 +90,11 @@ func svg(w http.ResponseWriter, r *http.Request) {
     // Stroke colour
     if len(matches[5]) > 0 {
       stroke = matches[5]
-    } 
+    }
+    
+    if len(matches[6]) > 0 {
+      message = matches[6]
+    }
   } else {
     // Show error image
     width = 300
