@@ -51,7 +51,10 @@
     connectElement("foreground");
     connectElement("message");
     
-    
+    // Auto update copyright year
+    [].slice.call(document.querySelectorAll(".copyright-year")).forEach(function (ele) {
+      ele.innerText = (new Date()).getFullYear(); 
+    });
     // initial render
     render();
   };
