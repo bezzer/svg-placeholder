@@ -34,12 +34,12 @@ const svgTemplate = "<svg width=\"{{.Width}}\" height=\"{{.Height}}\" xmlns=\"ht
     "</linearGradient>" +
   "{{end}}" +
   "<rect x=\"{{.StrokeWidth}}\" y=\"{{.StrokeWidth}}\" width=\"{{.BorderWidth}}\" height=\"{{.BorderHeight}}\" style=\"fill:{{if .FillEnd}}url(#lg){{else}}#{{.Fill}}{{end}};stroke:#{{.Stroke}};stroke-width:{{.StrokeWidth}}\"/>" +
-  "<text x=\"50%\" y=\"50%\" font-size=\"18\" text-anchor=\"middle\" alignment-baseline=\"middle\" font-family=\"sans-serif\" fill=\"#{{.Stroke}}\">"+
+  "<text x=\"50%\" y=\"50%\" font-size=\"18\" text-anchor=\"middle\" alignment-baseline=\"middle\" font-family=\"monospace, sans-serif\" fill=\"#{{.Stroke}}\">"+
     "{{if .ShowText}}" +
       "{{if .Message}}" +
         "{{.Message}}" +
       "{{else}}" +
-        "{{.Width}}x{{.Height}}" +
+        "{{.Width}}&#215;{{.Height}}" +
       "{{end}}" +
     "{{end}}" +
   "</text>" +
@@ -99,7 +99,7 @@ func svg(w http.ResponseWriter, r *http.Request) {
     // Show error image
     width = 300
     height = 100
-    message = "Unsupported request"
+    message = "Unsupported"
   }
   
   values := &Placeholder{
@@ -124,7 +124,7 @@ func svg(w http.ResponseWriter, r *http.Request) {
   if rendererr != nil {
     log.Printf("Error rendering template: %v", rendererr)
   } else {
-    log.Printf("SVG Placeholder of width %d, height %d, fill %s and stroke %s generated.", width, height, fill, stroke)
+    log.Printf("SVG Placeholder of width %d, height %d, fill %s and stroke %s generated. Message: %s", width, height, fill, stroke, message)
   }
 }
 
