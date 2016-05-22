@@ -35,7 +35,7 @@
             <div class="pics-container pics-info">
                 <p>
                     The lightest way to include placeholder images in your designs. 
-                    All images are lovingly served up as sub kilobyte, fully optimized 
+                    All images are lovingly served up as sub-kilobyte, fully optimized 
                     Scalable Vector Graphics (SVGs) in any size or color you need.
                     You can even add a short description to keep track of what goes
                     where in your mockups.
@@ -55,14 +55,17 @@
                         <input type="text" step="1" min=-"0" id="height">
                         <span class="optional">Optional</span>
                     </div>
-                    <div class="pics-input">
-                        <input type="color" value="#DEDEDE"id="background">
-                        <label for="background">Background<div class="pics-input-color"></div></label>
+                    <div class="pics-input color">
+                        <label for="background">Background: </label>
+                        <button class="backgroundStart jscolor {valueElement:'backgroundStart',required:false}">Start<span class="clear">&#215;</span></button><button class="backgroundEnd jscolor {valueElement:'backgroundEnd',required:false}">End<span class="clear">&#215;</span></button>
+                        <input type="hidden" value="" id="backgroundStart">
+                        <input type="hidden" value="" id="backgroundEnd">
                         <span class="optional">Optional</span>
                     </div>
-                    <div class="pics-input">
-                        <input type="color" value="#555555" id="foreground">
-                        <label for="foreground">Foreground<div class="pics-input-color"></div></label>
+                    <div class="pics-input color">
+                        <label for="foreground">Foreground: </label>
+                        <input type="hidden" value="" id="foreground">
+                        <button class="foreground jscolor {valueElement: 'foreground', required:false}"><span class="clear">&#215;</span></button>
                         <span class="optional">Optional</span>
                     </div>
                     <div class="pics-input">
@@ -109,7 +112,7 @@
                 </div>
             </div>
         </footer>
-        <script async src="js/site.js"></script>
+        <script async src="js/all.js"></script>
     </body>
 </html>
         

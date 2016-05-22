@@ -2,7 +2,8 @@
   var data = {
     width: "300",
     height: "",
-    background: "",
+    backgroundStart: "",
+    backgroundEnd: "",
     foreground: "",
     message: ""
   };
@@ -10,18 +11,7 @@
   var defaultForeground = "555555";
   var baseURL = window.location.href + "svg/";
   
-  // Taken from http://stackoverflow.com/questions/9600295/automatically-change-text-color-to-assure-readability
-  var invertColor = function (hexTripletColor) {
-    var color = hexTripletColor;
-    color = color.substring(1);           // remove #
-    color = parseInt(color, 16);          // convert to integer
-    color = 0xFFFFFF ^ color;             // invert three bytes
-    color = color.toString(16);           // convert to hex
-    color = ("000000" + color).slice(-6); // pad with leading zeros
-    color = "#" + color;                  // prepend #
-    return color;
-  }
-  
+  // Connect elemensts based on ID
   var connectElement = function(elemId) {
     var element = document.querySelector("#" + elemId);
     if (element.type === "text" || element.type === "number") {
@@ -29,25 +19,49 @@
         event.target.setSelectionRange(0, event.target.value.length);
       });
     }
-    element.addEventListener("input", function (event) {
-      var value = event.target.value;
-      data[elemId] = value;
-      if (element.type === "color") {
-        var colorDisplay = document.querySelector("#" + elemId + " + label .pics-input-color");
-        if (colorDisplay) {
-          colorDisplay.style.background = value;
-          colorDisplay.style.color = invertColor(value);
-          colorDisplay.innerHTML = value.toUpperCase();
-        }
+    
+    var updateValue = function (value) {
+      var current = data[elemId];
+      if (current !== value) {
+        data[elemId] = value;
+        render();
       }
-      render();
+    }
+   
+    // Update on input change
+    element.addEventListener("change", function (event) {
+      updateValue(event.target.value);
     });
+    
+    element.addEventListener("input", function (event) {
+      updateValue(event.target.value);
+    });
+    
+    var clearButton = document.querySelector("." + elemId + " .clear");
+    if (clearButton) {
+      clearButton.addEventListener('click', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        element.value = "";
+        data[elemId] = "";
+        var colorPicker = document.querySelector('.' + elemId);
+        if (colorPicker) {
+          colorPicker.style.backgroundColor = "";
+          colorPicker.style.color = "";
+        }
+        render();
+      });
+    }
+    
+    // Initial update
+    updateValue(element.value);
   };
   
   var init = function () {
     connectElement("width");
     connectElement("height");
-    connectElement("background");
+    connectElement("backgroundStart");
+    connectElement("backgroundEnd");
     connectElement("foreground");
     connectElement("message");
     
@@ -70,12 +84,15 @@
       dimensions += "x" + data.height;
     }
     
-    if (data.background) {
-        colors = "/" + data.background.replace("#", "");
+    if (data.backgroundStart) {
+        colors = "/" + data.backgroundStart.replace("#", "");
+        if (data.backgroundEnd) {
+          colors += "-" + data.backgroundEnd.replace("#", "");
+        }
     }
     
     if (data.foreground) {
-      colors += (data.background ? "/" : "/#" + defaultBackground + "/") + data.foreground.replace("#", "");
+      colors += (data.backgroundStart ? "/" : "/" + defaultBackground + "/") + data.foreground.replace("#", "");
     }
     
     if (data.message) {

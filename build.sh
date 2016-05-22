@@ -6,4 +6,4 @@ CGO_ENABLED=0 GOOS=linux go build -a -tags netgo -ldflags '-w' .
 gulp 
 
 # Re-build docker container
-docker build -t bezzer/svg-placeholder .
+docker build --no-cache=true -t bezzer/svg-placeholder .

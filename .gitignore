@@ -1,3 +1,5 @@
 svg-placeholder
 node_modules
 www-dist
+.DS_Store
+www/js/all.js
