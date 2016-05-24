@@ -17,6 +17,9 @@ h1 {
   text-align: center;
   text-shadow: 5px 5px 5px #7B1E7A;
 }
+strong {
+  font-weight: 700;
+}
 h2 {
   font-family: "Amatic SC", sans-serif;
   text-align: center;
