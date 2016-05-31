@@ -177,6 +177,21 @@ h2 {
   font-size: 1rem;
   color: #CCC;
 }
+.code {
+  color: #333;
+  background-color: rgba(255,255,255,0.9);
+  padding: 0.5rem;
+  border-radius: 2px;
+  display: block;
+  width: auto;
+}
+.code .highlight {
+  color: #7B1E7A;
+  font-weight: bold;
+}
+.code pre {
+  margin: 0;
+}
 
 @media only screen and (max-width:480px) {
   .pics-social, .pics-disclaimer {

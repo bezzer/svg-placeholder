@@ -4,12 +4,14 @@
     height: "",
     backgroundStart: "",
     backgroundEnd: "",
-    foreground: "",
+    foregroundText: "",
+    foregroundBorder: "",
     message: ""
   };
   var defaultBackground = "DEDEDE";
   var defaultForeground = "555555";
-  var baseURL = window.location.href + "svg/";
+  var location = window.location;
+  var baseURL = location.protocol + "//" + window.location.hostname + (location.port? ":" + location.port : "") + "/svg/";
   
   // Connect elemensts based on ID
   var connectElement = function(elemId) {
@@ -62,7 +64,8 @@
     connectElement("height");
     connectElement("backgroundStart");
     connectElement("backgroundEnd");
-    connectElement("foreground");
+    connectElement("foregroundText");
+    connectElement("foregroundBorder");
     connectElement("message");
     
     // Auto update copyright year
@@ -91,8 +94,11 @@
         }
     }
     
-    if (data.foreground) {
-      colors += (data.backgroundStart ? "/" : "/" + defaultBackground + "/") + data.foreground.replace("#", "");
+    if (data.foregroundText) {
+      colors += (data.backgroundStart ? "/" : "/" + defaultBackground + "/") + data.foregroundText.replace("#", "");
+      if (data.foregroundBorder) {
+        colors += "-" + data.foregroundBorder.replace("#","");
+      }
     }
     
     if (data.message) {
@@ -100,7 +106,7 @@
         colors = "/" + defaultBackground + "/" + defaultForeground;
       }
       
-      urlMessage = "/" + data.message;
+      urlMessage = "/" + encodeURIComponent(data.message);
     }
     
     // Build the URL

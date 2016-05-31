@@ -20,7 +20,8 @@ type Placeholder struct {
   StrokeWidth int
   Fill string
   FillEnd string
-  Stroke string
+  StrokeColor string
+  TextColor string
   Message string
   ShowText bool
 }
@@ -33,8 +34,8 @@ const svgTemplate = "<svg width=\"{{.Width}}\" height=\"{{.Height}}\" xmlns=\"ht
       "<stop offset=\"100%\" stop-color=\"#{{.FillEnd}}\"/>" +
     "</linearGradient>" +
   "{{end}}" +
-  "<rect x=\"{{.StrokeWidth}}\" y=\"{{.StrokeWidth}}\" width=\"{{.BorderWidth}}\" height=\"{{.BorderHeight}}\" style=\"fill:{{if .FillEnd}}url(#lg){{else}}#{{.Fill}}{{end}};stroke:#{{.Stroke}};stroke-width:{{.StrokeWidth}}\"/>" +
-  "<text x=\"50%\" y=\"50%\" font-size=\"18\" text-anchor=\"middle\" alignment-baseline=\"middle\" font-family=\"monospace, sans-serif\" fill=\"#{{.Stroke}}\">"+
+  "<rect x=\"{{.StrokeWidth}}\" y=\"{{.StrokeWidth}}\" width=\"{{.BorderWidth}}\" height=\"{{.BorderHeight}}\" style=\"fill:{{if .FillEnd}}url(#lg){{else}}#{{.Fill}}{{end}};stroke:#{{.StrokeColor}};stroke-width:{{.StrokeWidth}}\"/>" +
+  "<text x=\"50%\" y=\"50%\" font-size=\"18\" text-anchor=\"middle\" alignment-baseline=\"middle\" font-family=\"monospace, sans-serif\" fill=\"#{{.TextColor}}\">"+
     "{{if .ShowText}}" +
       "{{if .Message}}" +
         "{{.Message}}" +
@@ -52,19 +53,20 @@ const strokeWidth = 2
 var templates = template.Must(template.New("svg").Parse(svgTemplate))
 
 // Patern matcher for SVG URLs
-var svgPatern = regexp.MustCompile(`\/(\d+)(?:x(\d+))?(?:\/([\da-f]{6}|[\da-f]{3})(?:-([\da-f]{6}|[\da-f]{3}))?)?(?:\/([\da-f]{6}|[\da-f]{3})(?:\/(.+))?)?`)
+var svgPatern = regexp.MustCompile(`\/(\d+)(?:x(\d+))?(?:\/([\da-f]{6}|[\da-f]{3})(?:-([\da-f]{6}|[\da-f]{3}))?)?(?:\/([\da-f]{6}|[\da-f]{3})(?:-([\da-f]{6}|[\da-f]{3}))?(?:\/(.+))?)?`)
 
 // Handler for URL paths /svg/WIDTH/HEIGHT/[FILL/STROKE]
 func svg(w http.ResponseWriter, r *http.Request) {
   var showText bool
   var width, height int
-  var fill, fillEnd, stroke, message string
+  var fill, fillEnd, strokeColor, textColor, message string
   
   // Lowercase the path to simpify the regex
   path := strings.ToLower(r.URL.Path)
   
   fill = "DEDEDE"
-  stroke = "555555"
+  textColor = "555555"
+  strokeColor = "555555"
   
   if svgPatern.MatchString(path) {
     // Output SVG
@@ -89,11 +91,17 @@ func svg(w http.ResponseWriter, r *http.Request) {
     }
     // Stroke colour
     if len(matches[5]) > 0 {
-      stroke = matches[5]
+      textColor = matches[5]
     }
-    
+    // Border color
     if len(matches[6]) > 0 {
-      message = matches[6]
+      strokeColor = matches[6]
+    } else {
+      strokeColor = textColor;
+    }
+    // Text
+    if len(matches[7]) > 0 {
+      message = matches[7]
     }
   } else {
     // Show error image
@@ -107,7 +115,8 @@ func svg(w http.ResponseWriter, r *http.Request) {
     Width: width,
     Fill: fill,
     FillEnd: fillEnd,
-    Stroke: stroke,
+    StrokeColor: strokeColor,
+    TextColor: textColor,
     StrokeWidth: strokeWidth,
     Message: message,
     ShowText: showText,
@@ -124,7 +133,7 @@ func svg(w http.ResponseWriter, r *http.Request) {
   if rendererr != nil {
     log.Printf("Error rendering template: %v", rendererr)
   } else {
-    log.Printf("SVG Placeholder of width %d, height %d, fill %s and stroke %s generated. Message: %s", width, height, fill, stroke, message)
+    log.Printf("SVG Placeholder of width %d, height %d, fill %s and stroke %s generated. Message: %s", width, height, fill, strokeColor, message)
   }
 }
 

@@ -3,7 +3,7 @@
     <head>
        <title>Placeholder pics</title>
        <meta name=viewport content="width=device-width, initial-scale=1">
-       <meta name="description" content="Placeholder pics is the lightest way to include placeholder images in your designs" />
+       <meta name="description" content="Placeholder pics is the lightest way to include placeholder images in your designs using Scalable Vector Graphics (SVG)" />
        <!-- Twitter Card data -->
        <meta name="twitter:card" content="Placeholder pics, sub kilobyte placeholder images">
        <meta name="twitter:site" content="@bezzerbud">
@@ -34,11 +34,11 @@
             <h1><i class="icon-photo"></i> placeholder.pics</h1>
             <div class="pics-container pics-info">
                 <p>
-                    The lightest way to include placeholder images in your designs. 
+                    The lightest way to include placeholder pictures in your designs. 
                     All images are lovingly served up as sub-kilobyte, fully optimized 
-                    Scalable Vector Graphics (SVGs) in any size or color you need.
-                    You can even add a short description to keep track of what goes
-                    where in your mockups.
+                    Scalable Vector Graphics (SVG) in any size or color you need.
+                    You can even add a short label to keep track of what goes
+                    where in your designs and mockups.
                 </p>
             </div>
         </div>
@@ -64,8 +64,9 @@
                     </div>
                     <div class="pics-input color">
                         <label for="foreground">Foreground: </label>
-                        <input type="hidden" value="" id="foreground">
-                        <button class="foreground jscolor {valueElement: 'foreground', required:false}"><span class="clear">&#215;</span></button>
+                        <input type="hidden" value="" id="foregroundText">
+                        <input type="hidden" value="" id="foregroundBorder">
+                        <button class="foregroundText jscolor {valueElement: 'foregroundText', required:false}">Text<span class="clear">&#215;</span></button><button class="foregroundBorder jscolor {valueElement: 'foregroundBorder', required:false}">Border<span class="clear">&#215;</span></button>
                         <span class="optional">Optional</span>
                     </div>
                     <div class="pics-input">
@@ -82,16 +83,20 @@
         <div class="pics-about">
             <div class="pics-container">
                 <h2>Build your own URL</h2>
-                <p>The <strong>placeholder.pics</strong> service works uses a simple URL format to define the size, colours, and message used for your image.
+                <p>The <strong>placeholder.pics</strong> service uses a simple URL format to define the size, colours, and label used for your image.
                    The format that image URLs must follow is:
                 </p>
                 <ol>
                     <li>The URL must start with <strong>/svg/</strong></li>
                     <li>URLs that specify only a single dimension will be square, for example a request to <strong>/svg/100</strong> will return an svg that is 100 pixels wide and 100 pixels high</li>
-                    <li>Width and height is specified via <strong>WIDTH</strong>x<strong>HEIGHT</strong></li>
-                    <li>Background color can be either a single 3 or 6 character hex color code, or a gradient by defining a start color and stop color with <strong>START</strong>-<strong>STOP</strong></li>
-                    <li>Foreground or text and border color can be a 3 or 6 character hex color code. Background color must be defined in order to set a foreground color</li>
-                    <li>A description can be set as the last part of the URL. Descriptions should be short and take into account the size of the image being requested. Foreground and background color is required when using a description</li>
+                    <li>Width and height is specified via <strong>WIDTH</strong>x<strong>HEIGHT</strong>
+                    <div class="code">/svg/<span class="highlight">100x100</span></div></li>
+                    <li>Background color can be either a single 3 or 6 character hex color code, or a gradient by defining a start color and stop color with <strong>START</strong>-<strong>STOP</strong>
+                    <div class="code">/svg/100x100/<span class="highlight">888888</span></div></li>
+                    <li>Foreground text and border color can be specified as a single 3 or 6 character hex color code or two colors separated by a dash <strong>TEXT</strong>-<strong>BORDER</strong>. Background color must be defined in order to set a foreground color
+                    <div class="code">/svg/100x100/888888/<span class="highlight">EEE</span></div></li>
+                    <li>A label can be defined using the last part of the URL. Labels should be short and take into account the size of the image being requested. Foreground and background colors must be specified first when using a label
+                    <div class="code">/svg/100x100/888888/<span class="highlight">My Label</span></div></li>
                 </ol>
             </div>
         </div>
